@@ -1,8 +1,9 @@
 import zip from 'lodash/zip';
 import chunk from 'lodash/chunk';
 import mean from 'lodash/mean';
-import { AudioContext } from 'standardized-audio-context';
 import React from 'react';
+
+const AudioContext = window.AudioContext || window.webkitAudioContext;
 
 /**
  * @param {ArrayBuffer} data
@@ -16,6 +17,7 @@ async function calculate(data) {
   const buffer = await new Promise((resolve, reject) => {
     audioCtx.decodeAudioData(data.slice(0), resolve, reject);
   });
+
   // 左の音声データの絶対値を取る
   const leftData = buffer.getChannelData(0).map(Math.abs);
   // 右の音声データの絶対値を取る
@@ -28,7 +30,7 @@ async function calculate(data) {
   // chunk ごとに平均を取る
   const peaks = chunks.map(mean);
   // chunk の平均の中から最大値を取る
-  const max = Math.max(peaks);
+  const max = Math.max(...peaks);
 
   return { max, peaks };
 }
