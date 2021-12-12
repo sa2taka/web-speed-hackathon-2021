@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createPortal } from 'react-dom';
 import 'wicg-inert';
 
 /**
@@ -37,7 +37,7 @@ const Modal = ({ children, onRequestCloseModal }) => {
     return () => document.removeEventListener('keyup', handler);
   }, [onRequestCloseModal]);
 
-  return ReactDOM.createPortal(
+  return createPortal(
     <div className="fixed z-10 bottom-0 left-0 right-0 top-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="absolute bottom-0 left-0 right-0 top-0" onClick={onRequestCloseModal}></div>
       <div className="flex flex-col items-center justify-center px-2 w-full h-4/6">
