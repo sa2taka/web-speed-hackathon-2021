@@ -5,7 +5,8 @@ module.exports = {
       {
         corejs: '3',
         modules: 'commonjs',
-        useBuiltIns: false,
+        useBuiltIns: 'usage',
+        targets: '> 0.5%, not dead',
       },
     ],
     [

@@ -23,7 +23,6 @@ const config = {
   devtool: 'inline-source-map',
   entry: {
     main: [
-      'core-js',
       'regenerator-runtime/runtime',
       'jquery-binarytransport',
       path.resolve(SRC_PATH, './index.css'),
@@ -56,7 +55,6 @@ const config = {
   plugins: [
     new webpack.ProvidePlugin({
       $: 'jquery',
-      AudioContext: ['standardized-audio-context', 'AudioContext'],
       Buffer: ['buffer', 'Buffer'],
       'window.jQuery': 'jquery',
     }),
