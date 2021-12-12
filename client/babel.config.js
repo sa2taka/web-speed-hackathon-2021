@@ -1,10 +1,11 @@
+const NODE_ENV = process.env.NODE_ENV;
+const isProduction = NODE_ENV === 'production';
 module.exports = {
   presets: [
     [
       '@babel/preset-env',
       {
         corejs: '3',
-        modules: 'commonjs',
         useBuiltIns: 'usage',
         targets: '> 2%',
       },
@@ -12,7 +13,7 @@ module.exports = {
     [
       '@babel/preset-react',
       {
-        development: true,
+        development: !isProduction,
       },
     ],
   ],

@@ -3,11 +3,14 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
+const { defer } = require('lodash');
 
 const SRC_PATH = path.resolve(__dirname, './src');
 const PUBLIC_PATH = path.resolve(__dirname, '../public');
 const UPLOAD_PATH = path.resolve(__dirname, '../upload');
 const DIST_PATH = path.resolve(__dirname, '../dist');
+const NODE_ENV = process.env.NODE_ENV;
+const isProduction = NODE_ENV === 'production';
 
 /** @type {import('webpack').Configuration} */
 const config = {
@@ -20,7 +23,8 @@ const config = {
     },
     static: [PUBLIC_PATH, UPLOAD_PATH],
   },
-  devtool: 'inline-source-map',
+  devtool: isProduction ? false : 'inline-source-map',
+  mode: isProduction ? 'production' : 'development',
   entry: {
     main: [
       'regenerator-runtime/runtime',
@@ -29,7 +33,6 @@ const config = {
       path.resolve(SRC_PATH, './index.jsx'),
     ],
   },
-  mode: 'none',
   module: {
     rules: [
       {
