@@ -7,7 +7,7 @@ import { gzip } from 'pako/lib/deflate';
 async function fetchBinary(url) {
   const result = await fetch(url);
   if (!result.ok) {
-    throw new Error(result.body);
+    throw new Error(result.text());
   }
   return await (await result.blob()).arrayBuffer();
 }
@@ -20,7 +20,7 @@ async function fetchBinary(url) {
 async function fetchJSON(url) {
   const result = await fetch(url);
   if (!result.ok) {
-    throw new Error(result.body);
+    throw new Error(result.text());
   }
   return result.json();
 }
