@@ -11,7 +11,7 @@ import { NavigationItem } from '../NavigationItem';
  * @property {() => void} onRequestOpenPostModal
  */
 type Props = {
-  activeUser: Models.User;
+  activeUser: Models.User | null;
   onRequestOpenAuthModal: () => void;
   onRequestOpenPostModal: () => void;
 };

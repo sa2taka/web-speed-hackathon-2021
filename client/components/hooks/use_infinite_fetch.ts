@@ -1,4 +1,5 @@
 import React from 'react';
+import { Either } from '../../libs/utils/fetchers';
 
 const LIMIT = 10;
 
@@ -36,7 +37,7 @@ export type ReturnValues<T> =
  * @param {(apiPath: string) => Promise<T[]>} fetcher
  * @returns {ReturnValues<T>}
  */
-export function useInfiniteFetch<T>(apiPath: string, fetcher: (apiPath: string) => Promise<T[]>) {
+export function useInfiniteFetch<T>(apiPath: string, fetcher: (apiPath: string) => Promise<Either<T[]>>) {
   const internalRef = React.useRef({ isLoading: false, offset: 0 });
 
   const [result, setResult] = React.useState<Omit<ReturnValues<T>, 'fetchMore'>>({
@@ -62,16 +63,28 @@ export function useInfiniteFetch<T>(apiPath: string, fetcher: (apiPath: string) 
 
     const promise = fetcher(apiPath);
 
-    promise.then((allData) => {
-      setResult((cur) => ({
-        data: [...(cur.data ?? []), ...allData.slice(offset, offset + LIMIT)],
-        error: null,
-        isLoading: false,
-      }));
-      internalRef.current = {
-        isLoading: false,
-        offset: offset + LIMIT,
-      };
+    promise.then(({ data: allData, error }) => {
+      if (allData) {
+        setResult((cur) => ({
+          data: [...(cur.data ?? []), ...allData.slice(offset, offset + LIMIT)],
+          error: null,
+          isLoading: false,
+        }));
+        internalRef.current = {
+          isLoading: false,
+          offset: offset + LIMIT,
+        };
+      } else if (error) {
+        setResult((cur) => ({
+          ...cur,
+          error,
+          isLoading: false,
+        }));
+        internalRef.current = {
+          isLoading: false,
+          offset,
+        };
+      }
     });
 
     promise.catch((error) => {

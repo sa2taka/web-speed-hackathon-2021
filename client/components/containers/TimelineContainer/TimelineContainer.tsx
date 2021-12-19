@@ -6,6 +6,7 @@ import { TimelinePage } from '../../timeline/TimelinePage';
 import { useInfiniteFetch } from '../../hooks/use_infinite_fetch';
 import { fetchJSON } from '../../../libs/utils/fetchers';
 import { Models } from '../../../types/model';
+import Head from 'next/head';
 
 type Props = {};
 
@@ -15,9 +16,9 @@ const TimelineContainer: React.VFC<Props> = () => {
 
   return (
     <InfiniteScroll fetchMore={fetchMore} items={posts ?? []}>
-      <Helmet>
+      <Head>
         <title>タイムライン - CAwitter</title>
-      </Helmet>
+      </Head>
       <TimelinePage timeline={posts ?? []} />
     </InfiniteScroll>
   );

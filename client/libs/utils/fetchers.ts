@@ -1,15 +1,29 @@
 import { gzip } from 'pako';
 
+export type Either<T> =
+  | {
+      data: T;
+      error?: undefined;
+    }
+  | {
+      data?: undefined;
+      error: Error;
+    };
+
 /**
  * @param {string} url
  * @returns {Promise<ArrayBuffer>}
  */
-async function fetchBinary(url: string): Promise<ArrayBuffer> {
+async function fetchBinary(url: string): Promise<Either<ArrayBuffer>> {
   const result = await fetch(url);
   if (!result.ok) {
-    throw new Error(await result.text());
+    return {
+      error: new Error(await result.text()),
+    };
   }
-  return await (await result.blob()).arrayBuffer();
+  return {
+    data: await (await result.blob()).arrayBuffer(),
+  };
 }
 
 /**
@@ -17,12 +31,16 @@ async function fetchBinary(url: string): Promise<ArrayBuffer> {
  * @param {string} url
  * @returns {Promise<T>}
  */
-async function fetchJSON<T>(url: string): Promise<T> {
+async function fetchJSON<T>(url: string): Promise<Either<T>> {
   const result = await fetch(url);
   if (!result.ok) {
-    throw new Error(await result.text());
+    return {
+      error: new Error(await result.text()),
+    };
   }
-  return result.json();
+  return {
+    data: await result.json(),
+  };
 }
 
 /**
@@ -31,7 +49,7 @@ async function fetchJSON<T>(url: string): Promise<T> {
  * @param {File} file
  * @returns {Promise<T>}
  */
-async function sendFile(url: string, file: File) {
+async function sendFile<T>(url: string, file: File): Promise<Either<T>> {
   const formData = new FormData();
   formData.append('file', file);
 
@@ -41,9 +59,13 @@ async function sendFile(url: string, file: File) {
     body: formData,
   });
   if (!result.ok) {
-    throw new Error(await result.text());
+    return {
+      error: new Error(await result.text()),
+    };
   }
-  return result;
+  return {
+    data: await result.json(),
+  };
 }
 
 /**
@@ -52,7 +74,7 @@ async function sendFile(url: string, file: File) {
  * @param {object} data
  * @returns {Promise<T>}
  */
-async function sendJSON<T>(url: string, data: any): Promise<T> {
+async function sendJSON<T>(url: string, data: any): Promise<Either<T>> {
   const jsonString = JSON.stringify(data);
   const uint8Array = new TextEncoder().encode(jsonString);
   const compressed = gzip(uint8Array);
@@ -68,10 +90,14 @@ async function sendJSON<T>(url: string, data: any): Promise<T> {
   });
 
   if (!result.ok) {
-    throw new Error(await result.text());
+    return {
+      error: new Error(await result.text()),
+    };
   }
 
-  return result.json();
+  return {
+    data: await result.json(),
+  };
 }
 
 export { fetchBinary, fetchJSON, sendFile, sendJSON };

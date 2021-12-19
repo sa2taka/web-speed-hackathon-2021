@@ -1,9 +1,9 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/router';
 
 import { Modal } from '../../modal/Modal';
 import { NewPostModalPage } from '../../new_post_modal/NewPostModalPage';
-import { sendFile, sendJSON } from '../../../libs/utils/fetchers';
+import { Either, sendFile, sendJSON } from '../../../libs/utils/fetchers';
 import { Models } from '../../../types/model';
 
 /**
@@ -24,7 +24,7 @@ async function sendNewPost({
   movie?: File;
   sound?: File;
   text: string;
-}): Promise<Models.Post> {
+}): Promise<Either<Models.Post>> {
   const payload = {
     images: images ? await Promise.all(images.map((image) => sendFile('/api/v1/images', image))) : [],
     movie: movie ? await sendFile('/api/v1/movies', movie) : undefined,
@@ -45,7 +45,7 @@ type Props = {
 
 /** @type {React.VFC<Props>} */
 const NewPostModalContainer: React.VFC<Props> = ({ onRequestCloseModal }) => {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const [hasError, setHasError] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -56,18 +56,17 @@ const NewPostModalContainer: React.VFC<Props> = ({ onRequestCloseModal }) => {
 
   const handleSubmit = React.useCallback(
     async (params) => {
-      try {
-        setIsLoading(true);
-        const post = await sendNewPost(params);
+      setIsLoading(true);
+      const { data: post, error } = await sendNewPost(params);
+      if (post) {
         onRequestCloseModal();
-        navigate(`/posts/${post.id}`);
-      } catch (_err) {
+        router.push(`/posts/${post.id}`);
+      } else if (error) {
         setHasError(true);
-      } finally {
-        setIsLoading(false);
       }
+      setIsLoading(false);
     },
-    [onRequestCloseModal, navigate],
+    [onRequestCloseModal, router],
   );
 
   return (

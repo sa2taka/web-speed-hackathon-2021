@@ -11,7 +11,7 @@ import { Navigation } from '../Navigation';
  * @property {() => void} onRequestOpenPostModal
  */
 type Props = {
-  activeUser: Models.User;
+  activeUser: Models.User | null;
   children: React.ReactNode;
   onRequestOpenAuthModal: () => void;
   onRequestOpenPostModal: () => void;

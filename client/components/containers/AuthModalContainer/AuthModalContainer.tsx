@@ -2,7 +2,7 @@ import React from 'react';
 
 import { AuthModalPage } from '../../auth_modal/AuthModalPage';
 import { Modal } from '../../modal/Modal';
-import { sendJSON } from '../../../libs/utils/fetchers';
+import { sendJSON, Either } from '../../../libs/utils/fetchers';
 import { Models } from '../../../types/model';
 
 /**
@@ -24,22 +24,27 @@ const AuthModalContainer: React.VFC<Props> = ({ onRequestCloseModal, onUpdateAct
     setHasError(false);
   }, []);
 
+  const setResult = React.useCallback(
+    ({ data: user, error }: Either<Models.User>) => {
+      if (user) {
+        onUpdateActiveUser(user);
+      } else if (error) {
+        setHasError(true);
+      }
+      setIsLoading(false);
+    },
+    [onUpdateActiveUser, setHasError, setIsLoading],
+  );
+
   const handleSubmit = React.useCallback(
     async ({ type, ...params }) => {
-      try {
-        setIsLoading(true);
-        if (type === 'signin') {
-          const user = await sendJSON<Models.User>('/api/v1/signin', params);
-          onUpdateActiveUser(user);
-        } else if (type === 'signup') {
-          const user = await sendJSON<Models.User>('/api/v1/signup', params);
-          onUpdateActiveUser(user);
-        }
-        onRequestCloseModal();
-      } catch (_err) {
-        setHasError(true);
-      } finally {
-        setIsLoading(false);
+      setIsLoading(true);
+      if (type === 'signin') {
+        const result = await sendJSON<Models.User>('/api/v1/signin', params);
+        setResult(result);
+      } else if (type === 'signup') {
+        const result = await sendJSON<Models.User>('/api/v1/signup', params);
+        setResult(result);
       }
     },
     [onRequestCloseModal, onUpdateActiveUser],
