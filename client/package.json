@@ -4,11 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "",
     "build": "next build",
+    "prestart": "yarn build",
     "start": "next start",
-    "lint": "next lint",
-    "init": "yarn node --experimental-loader=ts-node/esm --es-module-specifier-resolution=node scripts/init.ts"
+    "lint": "next lint"
   },
   "dependencies": {
     "@ffmpeg/core": "0.10.0",
