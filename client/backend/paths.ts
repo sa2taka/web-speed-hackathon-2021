@@ -1,4 +1,4 @@
-import path from 'path';
+import * as path from 'path';
 
 const dirname = path.dirname(new URL(import.meta.url).pathname);
 const PUBLIC_PATH = path.resolve(dirname, '../../public');

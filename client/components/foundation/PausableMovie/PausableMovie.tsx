@@ -24,7 +24,7 @@ const PausableMovie: React.VFC<Props> = ({ src }) => {
   const { data, isLoading } = useFetch(src, fetchBinary);
 
   /** @type {React.RefObject<import('gifler').Animator>} */
-  const animatorRef = React.useRef<Animator>(null);
+  const animatorRef = React.useRef<typeof Animator>(null);
   /** @type {React.RefCallback<HTMLCanvasElement>} */
   const canvasCallbackRef = React.useCallback(
     (el) => {

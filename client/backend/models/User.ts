@@ -1,6 +1,5 @@
-import bcrypt from 'bcrypt';
-import sequelizePkg, { Model, ModelCtor } from 'sequelize';
-const { DataTypes } = sequelizePkg;
+import * as bcrypt from 'bcrypt';
+import { DataTypes, Model, ModelCtor } from 'sequelize';
 
 import { sequelize } from '../sequelize';
 

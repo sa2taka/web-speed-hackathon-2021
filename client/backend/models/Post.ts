@@ -1,5 +1,4 @@
-import sequelizePkg, { Model, ModelCtor } from 'sequelize';
-const { DataTypes } = sequelizePkg;
+import { DataTypes, Model, ModelCtor } from 'sequelize';
 
 import { ulid } from 'ulid';
 
