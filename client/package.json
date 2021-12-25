@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "prestart": "yarn build",
-    "start": "next start",
+    "start": "next start -p $PORT",
+    "start:inhouse": "next start",
     "lint": "next lint"
   },
   "dependencies": {
