@@ -1,5 +1,5 @@
+import Head from 'next/head';
 import React from 'react';
-import { Helmet } from 'react-helmet';
 
 import { TermPage } from '../../term/TermPage';
 
@@ -9,9 +9,9 @@ type Props = {};
 const TermContainer: React.VFC<Props> = () => {
   return (
     <>
-      <Helmet>
+      <Head>
         <title>利用規約 - CAwitter</title>
-      </Helmet>
+      </Head>
       <TermPage />
     </>
   );

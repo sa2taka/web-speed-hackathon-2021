@@ -1,5 +1,4 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 
 import { InfiniteScroll } from '../../foundation/InfiniteScroll';
@@ -9,6 +8,7 @@ import { useInfiniteFetch } from '../../hooks/use_infinite_fetch';
 import { fetchJSON } from '../../../libs/utils/fetchers';
 import { NotFoundContainer } from '../NotFoundContainer';
 import { Models } from '../../../types/model';
+import Head from 'next/head';
 
 /** @type {React.VFC} */
 const UserProfileContainer = () => {
@@ -19,9 +19,9 @@ const UserProfileContainer = () => {
 
   if (isLoadingUser) {
     return (
-      <Helmet>
+      <Head>
         <title>読込中 - CAwitter</title>
-      </Helmet>
+      </Head>
     );
   }
 
@@ -31,9 +31,9 @@ const UserProfileContainer = () => {
 
   return (
     <InfiniteScroll fetchMore={fetchMore} items={posts ?? []}>
-      <Helmet>
+      <Head>
         <title>{user.name} さんのタイムライン - CAwitter</title>
-      </Helmet>
+      </Head>
       <UserProfilePage timeline={posts ?? []} user={user} />
     </InfiniteScroll>
   );

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 
 import { InfiniteScroll } from '../../foundation/InfiniteScroll';
 import { TimelinePage } from '../../timeline/TimelinePage';

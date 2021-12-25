@@ -2,9 +2,14 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
 import session from 'express-session';
 import { initializeDatabase } from './initialize_database';
+import { existsSync } from 'fs';
+import { DATABASE_PATH } from './paths';
 
 (async () => {
-  await initializeDatabase();
+  if (!existsSync(DATABASE_PATH)) {
+    console.log('initialize db');
+    await initializeDatabase();
+  }
 })();
 
 const connectMiddleware = (req: NextApiRequest, res: NextApiResponse, middleware: Function) => {

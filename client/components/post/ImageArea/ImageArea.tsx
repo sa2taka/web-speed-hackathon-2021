@@ -32,7 +32,7 @@ const ImageArea: React.VFC<Props> = ({ images }) => {
                 'row-span-2': images.length <= 2 || (images.length === 3 && idx === 0),
               })}
             >
-              <Image alt={image.alt} src={getImagePath(image.id)} layout="fill" />
+              <CoveredImage alt={image.alt} src={getImagePath(image.id)} />
             </div>
           );
         })}

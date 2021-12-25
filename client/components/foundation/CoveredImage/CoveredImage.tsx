@@ -57,6 +57,8 @@ const CoveredImage: React.VFC<Props> = ({ alt, src }) => {
           'w-full h-auto': containerRatio <= imageRatio,
         })}
         src={blobUrl}
+        width={imageSize?.width ?? 0}
+        height={imageSize?.height ?? 0}
       />
     </div>
   );

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom';
 
 import { InfiniteScroll } from '../../foundation/InfiniteScroll';
@@ -9,6 +8,7 @@ import { useInfiniteFetch } from '../../hooks/use_infinite_fetch';
 import { fetchJSON } from '../../../libs/utils/fetchers';
 import { NotFoundContainer } from '../NotFoundContainer';
 import { Models } from '../../../types/model';
+import Head from 'next/head';
 
 type Props = {};
 
@@ -22,9 +22,9 @@ const PostContainer: React.VFC<Props> = () => {
 
   if (isLoadingPost) {
     return (
-      <Helmet>
+      <Head>
         <title>読込中 - CAwitter</title>
-      </Helmet>
+      </Head>
     );
   }
 
@@ -34,9 +34,9 @@ const PostContainer: React.VFC<Props> = () => {
 
   return (
     <InfiniteScroll fetchMore={fetchMore} items={comments ?? []}>
-      <Helmet>
+      <Head>
         <title>{post.user.name} さんのつぶやき - CAwitter</title>
-      </Helmet>
+      </Head>
       <PostPage comments={comments ?? []} post={post} />
     </InfiniteScroll>
   );
