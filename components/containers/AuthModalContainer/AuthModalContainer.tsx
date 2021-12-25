@@ -47,7 +47,7 @@ const AuthModalContainer: React.VFC<Props> = ({ onRequestCloseModal, onUpdateAct
         setResult(result);
       }
     },
-    [onRequestCloseModal, onUpdateActiveUser],
+    [setResult],
   );
 
   return (
