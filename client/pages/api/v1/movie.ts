@@ -1,4 +1,4 @@
-import handler from '../../../backend/handler';
+import getHandler from '../../../backend/handler';
 import { User } from '../../../backend/models';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -10,12 +10,12 @@ import { UPLOAD_PATH } from '../../../backend/paths';
 // 変換した動画の拡張子
 const EXTENSION = 'gif';
 
-export default handler.post(async (req, res) => {
+export default getHandler().post(async (req, res) => {
   if (req.session.userId === undefined) {
-    throw res.status(401).send({});
+    return res.status(401).send({});
   }
   if (Buffer.isBuffer(req.body) === false) {
-    throw res.status(400).send({});
+    return res.status(400).send({});
   }
 
   const movieId = uuidv4();

@@ -1,7 +1,7 @@
-import handler, { withSession } from '../../../../backend/handler';
+import getHandler, { withSession } from '../../../../backend/handler';
 import { Post, User } from '../../../../backend/models';
 
-export default handler
+export default getHandler()
   .get(async (req, res) => {
     const posts = await Post.findAll({
       limit: Number(req.query.limit ?? 40),

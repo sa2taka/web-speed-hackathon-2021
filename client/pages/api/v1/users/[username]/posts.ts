@@ -1,10 +1,11 @@
-import handler, { withSession } from '../../../../../backend/handler';
+import getHandler, { withSession } from '../../../../../backend/handler';
 import { Post, User } from '../../../../../backend/models';
 
-export default handler.get(async (req, res) => {
-  const username = typeof req.query.username === 'string' ? req.query.username : req.query.username[0];
-  const limit = typeof req.query.limit === 'string' ? req.query.limit : req.query.limit[0];
-  const offset = typeof req.query.offset === 'string' ? req.query.offset : req.query.offset[0];
+export default getHandler().get(async (req, res) => {
+  console.log(req.query);
+  const username = typeof req.query.username === 'object' ? req.query.username[0] : req.query.username;
+  const limit = typeof req.query.limit === 'object' ? req.query.limit[0] : req.query.limit;
+  const offset = typeof req.query.offset === 'object' ? req.query.offset[0] : req.query.offset;
 
   const user = await User.findOne({
     where: {
@@ -13,12 +14,12 @@ export default handler.get(async (req, res) => {
   });
 
   if (user === null) {
-    throw res.status(404).send({});
+    return res.status(404).send({});
   }
 
   const posts = await Post.findAll({
-    limit: Number(limit),
-    offset: Number(offset),
+    limit: limit ? Number(limit) : 20,
+    offset: offset ? Number(offset) : 0,
     where: {
       userId: user.id,
     },

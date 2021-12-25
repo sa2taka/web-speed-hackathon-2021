@@ -1,7 +1,7 @@
-import handler, { withSession } from '../../../../../backend/handler';
+import getHandler, { withSession } from '../../../../../backend/handler';
 import { Comment } from '../../../../../backend/models';
 
-export default handler.get(async (req, res) => {
+export default getHandler().get(async (req, res) => {
   const postId = typeof req.query.postId === 'string' ? req.query.postId : req.query.postId[0];
   const limit = typeof req.query.limit === 'string' ? req.query.postId : req.query.postId[0];
   const offset = typeof req.query.offset === 'string' ? req.query.postId : req.query.postId[0];

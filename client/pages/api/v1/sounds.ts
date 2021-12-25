@@ -1,4 +1,4 @@
-import handler, { withSession } from '../../../backend/handler';
+import getHandler, { withSession } from '../../../backend/handler';
 import { convertImage } from '../../../backend/converters/convert_image';
 import { UPLOAD_PATH } from '../../../backend/paths';
 
@@ -11,14 +11,14 @@ import { convertSound } from '../../../backend/converters/convert_sound';
 // 変換した画像の拡張子
 const EXTENSION = 'mp3';
 
-export default handler.post(async (req, res) => {
+export default getHandler().post(async (req, res) => {
   await withSession(req, res);
 
   if (req.session.userId === undefined) {
-    throw res.status(401).send({});
+    return res.status(401).send({});
   }
   if (Buffer.isBuffer(req.body) === false) {
-    throw res.status(400).send({});
+    return res.status(400).send({});
   }
 
   const soundId = uuidv4();

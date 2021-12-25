@@ -9,10 +9,12 @@ import { fetchJSON } from '../../../libs/utils/fetchers';
 import { NotFoundContainer } from '../NotFoundContainer';
 import { Models } from '../../../types/model';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 /** @type {React.VFC} */
 const UserProfileContainer = () => {
-  const { username } = useParams();
+  const router = useRouter();
+  const { username } = router.query;
 
   const { data: user, isLoading: isLoadingUser } = useFetch<Models.User>(`/api/v1/users/${username}`, fetchJSON);
   const { data: posts, fetchMore } = useInfiniteFetch<Models.Post>(`/api/v1/users/${username}/posts`, fetchJSON);

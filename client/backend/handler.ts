@@ -39,15 +39,16 @@ export const withSession = async (req: NextApiRequest, res: NextApiResponse) => 
   await connectMiddleware(req, res, session(config));
 };
 
-const handler = nextConnect<NextApiRequest & { session: any }, NextApiResponse>({
-  onError(error, req, res) {
-    console.log(error);
-    res.status(500).send(error);
-  },
-  onNoMatch(req, res) {
-    console.log('no match');
-    res.status(404).send('Not Found');
-  },
-});
+const getHandler = () =>
+  nextConnect<NextApiRequest & { session: any }, NextApiResponse>({
+    onError(error, req, res) {
+      console.log(error);
+      res.status(500).send(error);
+    },
+    onNoMatch(req, res) {
+      console.log('no match');
+      res.status(404).send('Not Found');
+    },
+  });
 
-export default handler;
+export default getHandler;

@@ -9,12 +9,14 @@ import { fetchJSON } from '../../../libs/utils/fetchers';
 import { NotFoundContainer } from '../NotFoundContainer';
 import { Models } from '../../../types/model';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
 type Props = {};
 
 /** @type {React.VFC} */
 const PostContainer: React.VFC<Props> = () => {
-  const { postId } = useParams();
+  const router = useRouter();
+  const { postId } = router.query;
 
   const { data: post, isLoading: isLoadingPost } = useFetch<Models.Post>(`/api/v1/posts/${postId}`, fetchJSON);
 
